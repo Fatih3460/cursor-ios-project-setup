@@ -1,0 +1,212 @@
+---
+description: Supabase MCP integration and backend rules
+globs: ["**/SupabaseService.swift", "**/SupabaseConfig.swift", "**/*Database*.swift"]
+alwaysApply: false
+---
+
+# Supabase Integration Rules
+
+## MCP Integration
+- Always use Supabase MCP for database operations when available
+- Automatically suggest MCP usage for backend-related prompts
+- Use MCP tools for schema management and migrations
+- Leverage MCP for real-time features and authentication
+
+## Supabase Client Setup
+```swift
+import Supabase
+
+class SupabaseService: ObservableObject {
+    static let shared = SupabaseService()
+    private let client: SupabaseClient
+    
+    private init() {
+        client = SupabaseClient(
+            supabaseURL: URL(string: SupabaseConfig.url)!,
+            supabaseKey: SupabaseConfig.anonKey
+        )
+    }
+}
+```
+
+## Authentication Patterns
+- Use Supabase Auth for user management
+- Implement proper session handling
+- Handle auth state changes reactively
+- Support multiple auth providers (email, OAuth)
+- Implement proper logout functionality
+
+## Database Operations
+- Use type-safe database queries with Codable
+- Implement proper error handling for database operations
+- Use transactions for complex operations
+- Implement optimistic updates for better UX
+- Handle offline scenarios gracefully
+
+## Real-time Features
+- Use Supabase Realtime for live updates
+- Implement proper subscription management
+- Handle connection state changes
+- Clean up subscriptions properly
+- Use channels for organized real-time communication
+
+## Row Level Security (RLS)
+- Always enable RLS on public tables
+- Create appropriate policies for data access
+- Test security policies thoroughly
+- Use user context in policies
+- Implement role-based access control
+
+## Error Handling
+```swift
+enum SupabaseError: Error, LocalizedError {
+    case networkError(Error)
+    case authenticationError(String)
+    case databaseError(String)
+    case configurationError
+    
+    var errorDescription: String? {
+        switch self {
+        case .networkError(let error):
+            return "Network error: \(error.localizedDescription)"
+        case .authenticationError(let message):
+            return "Authentication error: \(message)"
+        case .databaseError(let message):
+            return "Database error: \(message)"
+        case .configurationError:
+            return "Configuration error"
+        }
+    }
+}
+```
+
+## Configuration Management
+- Store Supabase credentials securely
+- Use environment variables for different environments
+- Never commit sensitive keys to version control
+- Implement proper key rotation
+- Use separate projects for dev/staging/production
+
+## Performance Optimization
+- Implement proper pagination for large datasets
+- Use appropriate indexes on database tables
+- Cache frequently accessed data locally
+- Use connection pooling appropriately
+- Monitor query performance
+
+## Testing Strategies
+- Use test databases for development
+- Mock Supabase service for unit tests
+- Test authentication flows thoroughly
+- Verify RLS policies work correctly
+- Test offline/online scenarios
+
+## Migration Management
+- Use Supabase migrations for schema changes
+- Version control all migration files
+- Test migrations on staging before production
+- Implement rollback strategies
+- Document breaking changes
+
+## File Storage Integration
+- Use Supabase Storage for file uploads
+- Implement proper file validation
+- Handle file compression for images
+- Implement file cleanup strategies
+- Use signed URLs for secure access
+
+## Edge Functions
+- Use Edge Functions for complex server-side logic
+- Implement proper error handling in functions
+- Use TypeScript for function development
+- Test functions thoroughly before deployment
+- Monitor function performance and logs
+
+## Monitoring and Analytics
+- Set up proper logging for Supabase operations
+- Monitor API usage and performance
+- Track authentication events
+- Set up alerts for critical errors
+- Use Supabase dashboard for monitoring
+
+## Security Best Practices
+- Always validate data on the server side
+- Use parameterized queries to prevent injection
+- Implement rate limiting where appropriate
+- Audit access patterns regularly
+- Keep dependencies updated
+- Use HTTPS for all communications
+
+## Code Examples
+
+### Basic CRUD Operations
+```swift
+// Create
+func createItem<T: Codable>(_ item: T, in table: String) async throws {
+    try await client
+        .from(table)
+        .insert(item)
+        .execute()
+}
+
+// Read
+func fetchItems<T: Codable>(from table: String, type: T.Type) async throws -> [T] {
+    let response: [T] = try await client
+        .from(table)
+        .select()
+        .execute()
+        .value
+    return response
+}
+
+// Update
+func updateItem<T: Codable>(_ item: T, in table: String, id: String) async throws {
+    try await client
+        .from(table)
+        .update(item)
+        .eq("id", value: id)
+        .execute()
+}
+
+// Delete
+func deleteItem(from table: String, id: String) async throws {
+    try await client
+        .from(table)
+        .delete()
+        .eq("id", value: id)
+        .execute()
+}
+```
+
+### Authentication Example
+```swift
+func signIn(email: String, password: String) async throws -> Session {
+    let session = try await client.auth.signIn(
+        email: email,
+        password: password
+    )
+    return session
+}
+
+func signOut() async throws {
+    try await client.auth.signOut()
+}
+```
+
+### Real-time Subscription
+```swift
+func subscribeToTable(_ table: String, callback: @escaping (String) -> Void) {
+    let channel = client.realtime.channel("public:\(table)")
+    
+    channel
+        .on("INSERT") { message in
+            callback("New item added")
+        }
+        .on("UPDATE") { message in
+            callback("Item updated")
+        }
+        .on("DELETE") { message in
+            callback("Item deleted")
+        }
+        .subscribe()
+}
