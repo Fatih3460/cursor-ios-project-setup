@@ -1,0 +1,66 @@
+---
+description: Core development rules for iOS projects - Always active
+globs: 
+alwaysApply: true
+---
+
+# Core iOS Development Rules
+
+## Language Standards
+- All code, APIs, schemas, functions, variables, comments must be in **English**
+- All user interaction (explanations, questions, warnings) must be in **Turkish**
+- Never mix languages in either context
+
+## iOS Development Standards
+- Use latest Swift and SwiftUI versions
+- Follow Swift style guidelines and naming conventions
+- Functions should be small, single-responsibility, and testable
+- Split long files into smaller modules when needed
+- Split long functions into helper methods to maintain readability
+- Apply memory management best practices
+- Design layouts to support both iPhone and iPad
+- For previews, use static mock data — do not perform actual API requests
+
+## File Organization Rules
+- When a file becomes too long, split it into smaller files
+- When a function becomes too long, split it into smaller functions
+- All Swift and SwiftUI files must have appropriate headers
+- All new files must be added to the Xcode project manually
+
+## UI/UX Design Principles
+- Use native SwiftUI components: `List`, `TabView`, `NavigationView`, `SF Symbols`
+- Use layout tools like `VStack`, `HStack`, `ZStack`, `Spacer`, `GeometryReader`
+- Enhance UI with: shadows, gradients, blurs, custom shapes, animations
+- Design for both light and dark modes
+- Maintain simple, consistent user flows
+- Add interactivity via gestures, haptics, and smooth transitions
+
+## Backend & API Integration
+- Design clean and efficient APIs
+- Implement secure authentication (JWT, OAuth, etc.)
+- Handle network conditions gracefully (timeouts, retries, fallback)
+- Apply caching where appropriate
+- Manage state cleanly during API communication
+- Handle error states and empty data scenarios properly
+
+## Testing & Quality Control
+- Perform unit and integration testing before production
+- Validate all edge cases and user inputs
+- Optimize for performance (e.g., lazy loading, throttling)
+- Ensure accessibility (VoiceOver, Dynamic Type, contrast)
+- Conduct code reviews and manual QA before release
+
+## Error Handling
+- Always use proper Swift error handling with try/catch
+- Create custom error types for different scenarios
+- Provide meaningful error messages to users
+- Log errors appropriately for debugging
+- Never force unwrap optionals without good reason
+
+## Performance Guidelines
+- Use @StateObject for view model initialization
+- Prefer @ObservedObject for passed objects
+- Use @Published for reactive properties
+- Implement lazy loading for large data sets
+- Optimize image loading and caching
+- Use appropriate data structures for performance
