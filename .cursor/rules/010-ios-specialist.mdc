@@ -1,0 +1,124 @@
+---
+description: iOS-specific development rules and best practices
+globs: ["**/*.swift", "**/*.xib", "**/*.storyboard", "**/Info.plist"]
+alwaysApply: false
+---
+
+# iOS Specialist Rules
+
+## Swift Language Features
+- Use modern Swift features: async/await, Actors, structured concurrency
+- Prefer value types (structs) over reference types (classes) when appropriate
+- Use property wrappers: @State, @Binding, @ObservedObject, @StateObject
+- Implement proper Codable conformance for data models
+- Use computed properties and didSet/willSet when appropriate
+
+## SwiftUI Specific Guidelines
+- Use @ViewBuilder for custom view compositions
+- Implement proper view lifecycle management
+- Use @Environment for dependency injection
+- Prefer @StateObject for object creation in views
+- Use @ObservedObject for object injection
+- Implement custom ViewModifiers for reusable styling
+- Use GeometryReader sparingly and only when needed
+
+## MVVM Architecture
+- ViewModels should be ObservableObject classes
+- Views should only handle UI logic
+- Models should be simple data structures
+- Use @Published for reactive properties in ViewModels
+- Implement proper separation of concerns
+- Use dependency injection for services
+
+## Navigation Patterns
+- Use NavigationStack for iOS 16+ projects
+- Implement proper navigation state management
+- Use programmatic navigation when appropriate
+- Handle deep linking properly
+- Implement proper back navigation behavior
+
+## Data Management
+- Use Core Data for complex local storage
+- Use UserDefaults for simple settings
+- Implement proper data validation
+- Use background contexts for Core Data operations
+- Implement proper data synchronization
+
+## Networking
+- Use URLSession with modern async/await syntax
+- Implement proper error handling for network requests
+- Use Codable for JSON parsing
+- Implement request/response models
+- Add proper timeout handling
+- Implement retry logic for failed requests
+
+## Performance Optimization
+- Use LazyVStack/LazyHStack for large lists
+- Implement proper image caching
+- Use @State and @Binding efficiently
+- Avoid unnecessary view redraws
+- Use instruments for performance profiling
+- Implement proper memory management
+
+## Security Best Practices
+- Store sensitive data in Keychain
+- Implement proper SSL pinning
+- Validate all user inputs
+- Use App Transport Security
+- Implement proper authentication flows
+- Secure API communications
+
+## Accessibility
+- Add proper accessibility labels
+- Support VoiceOver navigation
+- Implement Dynamic Type support
+- Use semantic colors for dark mode
+- Test with VoiceOver enabled
+- Support Switch Control
+
+## Testing Guidelines
+- Write unit tests for ViewModels
+- Create UI tests for critical user flows
+- Use XCTest framework
+- Mock network dependencies
+- Test error conditions
+- Use test data for consistent testing
+
+## Code Organization
+```
+ProjectName/
+├── Sources/
+│   ├── App/                 # App entry point
+│   ├── Models/              # Data models
+│   ├── Views/               # SwiftUI views
+│   │   ├── Components/      # Reusable UI components
+│   │   └── Screens/         # Main screen views
+│   ├── ViewModels/          # MVVM view models
+│   ├── Services/            # Business logic services
+│   │   ├── Network/         # Network layer
+│   │   ├── Storage/         # Data persistence
+│   │   └── Authentication/  # Auth services
+│   ├── Utils/               # Helper utilities
+│   │   ├── Extensions/      # Swift extensions
+│   │   ├── Constants/       # App constants
+│   │   └── Helpers/         # Helper functions
+│   └── Resources/           # Assets and localization
+├── Tests/                   # Test files
+└── Package.swift           # Dependencies
+```
+
+## Naming Conventions
+- Use PascalCase for types (structs, classes, enums)
+- Use camelCase for functions and variables
+- Use descriptive names for better readability
+- Prefix protocols with -able or -ing when appropriate
+- Use clear, intention-revealing names
+- Avoid abbreviations in names
+
+## Documentation
+- Add documentation comments for public APIs
+- Use /// for documentation comments
+- Include usage examples in documentation
+- Document complex algorithms
+- Add README files for modules
+- Keep documentation up to date
