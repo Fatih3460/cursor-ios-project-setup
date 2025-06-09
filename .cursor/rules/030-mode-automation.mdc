@@ -1,0 +1,221 @@
+---
+description: Automatic mode selection based on prompt analysis
+globs: 
+alwaysApply: true
+---
+
+# Mode Automation Rules
+
+## Automatic Mode Selection
+
+Analyze user prompts and automatically suggest the most appropriate specialist mode:
+
+### 🏗️ iOS Architect Mode (⌘⇧A)
+**Trigger Keywords:**
+- architecture, design, pattern, MVVM, MVC, VIPER
+- system design, component architecture, module design
+- scalability, maintainability, coupling, cohesion
+- technical decision, architecture review
+- "how should I structure", "what's the best way to organize"
+- dependency injection, service layer, data flow
+
+**Example Prompts:**
+- "How should I structure my iOS app?"
+- "What architecture pattern should I use?"
+- "How to organize my SwiftUI project?"
+- "Design a scalable iOS architecture"
+
+### 💻 iOS Coder Mode (⌘⇧C)
+**Trigger Keywords:**
+- implement, create, write code, build, develop
+- SwiftUI, UIKit, Swift, function, class, struct
+- bug fix, debug, error, issue, problem
+- "write a", "create a", "implement a", "build a"
+- API integration, networking, data parsing
+- specific coding tasks and implementations
+
+**Example Prompts:**
+- "Write a SwiftUI view for user profile"
+- "Implement user authentication"
+- "Create a custom button component"
+- "Fix this SwiftUI layout issue"
+
+### 🎨 UI Designer Mode (⌘⇧D)
+**Trigger Keywords:**
+- UI, UX, design, layout, interface, visual
+- color, typography, spacing, animation, transition
+- user experience, user interface, accessibility
+- "how should it look", "design for", "make it beautiful"
+- responsive, adaptive, dark mode, light mode
+- icons, images, graphics, styling
+
+**Example Prompts:**
+- "Design a login screen"
+- "How should the user interface look?"
+- "Create a beautiful card component"
+- "Improve the visual design"
+
+### 📋 Project Planner Mode (⌘⇧P)
+**Trigger Keywords:**
+- plan, planning, roadmap, timeline, milestone
+- feature, requirement, specification, scope
+- project, task, workflow, process, methodology
+- "what should I build", "how to start", "planning phase"
+- estimation, resources, dependencies, priorities
+- MVP, phases, iterations, sprints
+
+**Example Prompts:**
+- "Help me plan my iOS app development"
+- "What features should I include?"
+- "Create a development roadmap"
+- "How to prioritize app features?"
+
+### 📊 Code Analyst Mode (⌘⇧L)
+**Trigger Keywords:**
+- analyze, review, check, audit, optimize
+- performance, memory, efficiency, best practices
+- code quality, refactor, improvement, optimization
+- "review my code", "analyze this", "is this good?"
+- security, vulnerability, code smell, technical debt
+- testing, coverage, quality assurance
+
+**Example Prompts:**
+- "Review my SwiftUI code"
+- "Analyze app performance"
+- "Check for security issues"
+- "Optimize this implementation"
+
+## Mode Selection Logic
+
+### Primary Analysis
+1. **Identify the main intent** of the user's prompt
+2. **Extract key action words** (implement, design, plan, analyze, etc.)
+3. **Determine the focus area** (architecture, coding, UI, planning, review)
+4. **Consider context** from previous messages and current project state
+
+### Secondary Factors
+- **File types** currently open (Swift files → Coder, Storyboards → Designer)
+- **Project phase** (early stage → Planner, development → Coder)
+- **Complexity level** (high-level → Architect, specific → Coder)
+
+### Automatic Suggestions
+
+When analyzing a prompt, provide mode suggestions like:
+
+```
+🤖 **Önerilen Mode:** iOS Coder Mode (⌘⇧C)
+📋 **Sebep:** SwiftUI view implementation isteği tespit edildi
+🔄 **Alternatif:** UI Designer Mode (⌘⇧D) tasarım odaklı yaklaşım için
+```
+
+### Multi-Mode Workflows
+
+For complex requests that span multiple areas, suggest a workflow:
+
+```
+🔄 **Önerilen Workflow:**
+1. 🏗️ Architect Mode - Sistem tasarımı için
+2. 🎨 Designer Mode - UI/UX tasarımı için  
+3. 💻 Coder Mode - Implementation için
+4. 📊 Analyst Mode - Code review için
+```
+
+## Context-Aware Suggestions
+
+### Based on Current Files
+- **Models/*.swift** → Suggest Architect or Coder mode
+- **Views/*.swift** → Suggest Designer or Coder mode
+- **Services/*.swift** → Suggest Architect or Coder mode
+- **README.md** → Suggest Planner mode
+
+### Based on Project Stage
+- **New Project** → Planner → Architect → Designer → Coder
+- **Active Development** → Coder → Designer → Analyst
+- **Optimization Phase** → Analyst → Architect → Coder
+- **Release Preparation** → Analyst → Planner
+
+### Based on Error Context
+- **Build Errors** → Coder Mode
+- **UI Issues** → Designer Mode
+- **Architecture Problems** → Architect Mode
+- **Performance Issues** → Analyst Mode
+
+## MCP Integration Triggers
+
+### Supabase MCP Activation
+**Trigger Keywords:**
+- database, backend, API, server, authentication
+- Supabase, PostgreSQL, realtime, storage
+- user management, data persistence, sync
+- "connect to database", "backend integration", "user auth"
+
+**Auto-Activate When:**
+- Project contains SupabaseService.swift
+- Prompt mentions database operations
+- Authentication-related requests
+- Real-time features requested
+
+### GitHub MCP Activation
+**Trigger Keywords:**
+- repository, commit, push, pull request, branch
+- version control, git, collaboration, code review
+- "create repo", "push code", "open PR"
+
+**Auto-Activate When:**
+- Git-related operations requested
+- Repository management needed
+- Code sharing or collaboration mentioned
+
+## Implementation Examples
+
+### Mode Detection Function
+```swift
+func detectOptimalMode(from prompt: String, context: ProjectContext) -> RecommendedMode {
+    let keywords = extractKeywords(from: prompt)
+    let intent = analyzeIntent(keywords)
+    let projectContext = analyzeProjectContext(context)
+    
+    switch (intent, projectContext) {
+    case (.implementation, .activeDevelopment):
+        return .iosCoder
+    case (.design, _):
+        return .uiDesigner
+    case (.architecture, .newProject), (.architecture, .refactoring):
+        return .iosArchitect
+    case (.planning, .newProject):
+        return .projectPlanner
+    case (.analysis, _):
+        return .codeAnalyst
+    default:
+        return .iosCoder // Default fallback
+    }
+}
+```
+
+### Auto-Suggestion Display
+```
+🎯 **Otomatik Mode Seçimi Aktif**
+
+Prompt analizi: "Create a user authentication system"
+├── 🔍 Tespit edilen: authentication, system, create
+├── 🎯 Önerilen: iOS Architect Mode (⌘⇧A)
+├── 📋 Sebep: Sistem tasarımı ve architecture kararları gerekli
+├── 🔄 Workflow: Architect → Coder → Analyst
+└── 🔌 MCP: Supabase MCP otomatik aktifleştirilecek
+
+Devam etmek için ⌘⇧A tuşlarına basın veya farklı bir mode seçin.
+```
+
+## Error Prevention
+
+### Common Mistakes to Avoid
+- Don't suggest Designer mode for backend tasks
+- Don't suggest Coder mode for high-level planning
+- Don't suggest Analyst mode for new implementations
+- Don't mix modes inappropriately
+
+### Validation Checks
+- Ensure mode matches the task complexity
+- Verify mode capabilities align with request
+- Check if required tools are available in suggested mode
+- Confirm mode expertise matches the domain
