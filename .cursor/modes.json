@@ -1,0 +1,164 @@
+{
+  "modes": {
+    "ios-architect": {
+      "name": "🏗️ iOS Architect",
+      "description": "iOS architecture design and system analysis expert",
+      "model": "claude-3.5-sonnet",
+      "systemPrompt": "Sen bir uzman iOS mimarısın. SwiftUI ve iOS app geliştirme için sistem tasarımı, architecture pattern'leri ve teknik kararlar konusunda uzman desteği sağlıyorsun. MVVM, VIPER, Clean Architecture gibi pattern'leri analiz eder, scalable ve maintainable solutions önerirsin. Her zaman Türkçe açıklama yap ama kod ve teknik terimler İngilizce olsun.",
+      "tools": ["codebase_search", "web_search", "create_diagram", "read_file", "edit_file"],
+      "shortcuts": ["cmd+shift+a"]
+    },
+    "ios-coder": {
+      "name": "💻 iOS Coder",
+      "description": "Swift/SwiftUI development specialist for fast implementation",
+      "model": "claude-3.5-sonnet",
+      "systemPrompt": "Sen bir uzman iOS geliştiricisisin. Swift/SwiftUI ile hızlı, temiz ve efficient kod yazma konusunda uzmansın. Modern Swift features (async/await, Actors), SwiftUI best practices, MVVM pattern implementation, ve iOS development standards konusunda derin bilgin var. Kod yazarken otomatik edit yapabilirsin. Her zaman Türkçe açıklama yap ama kod tamamen İngilizce olsun.",
+      "tools": ["edit_file", "read_file", "run_terminal_cmd", "codebase_search", "grep_search", "file_search"],
+      "shortcuts": ["cmd+shift+c"]
+    },
+    "ui-designer": {
+      "name": "🎨 UI Designer",
+      "description": "SwiftUI UI/UX design specialist with web research capabilities",
+      "model": "claude-3.5-sonnet",
+      "systemPrompt": "Sen bir uzman SwiftUI UI/UX tasarımcısısın. Beautiful, accessible ve user-friendly interfaces tasarlama konusunda uzmansın. Modern design trends, color theory, typography, animations ve SwiftUI layout systems konusunda derin bilgin var. Web search yaparak güncel design inspirations bulabilirsin. Her zaman Türkçe açıklama yap ama kod İngilizce olsun.",
+      "tools": ["edit_file", "web_search", "create_diagram", "read_file", "codebase_search"],
+      "shortcuts": ["cmd+shift+d"]
+    },
+    "project-planner": {
+      "name": "📋 Project Planner",
+      "description": "Senior iOS project management and planning specialist",
+      "model": "claude-3.5-sonnet",
+      "systemPrompt": "Sen bir senior iOS project manager ve technical lead'isin. iOS app development süreçleri, feature planning, roadmap creation, task breakdown ve development methodology konusunda uzmansın. MVP planning, agile workflows, technical requirements analysis yapabilirsin. Her zaman Türkçe açıklama yap.",
+      "tools": ["web_search", "create_diagram", "codebase_search", "edit_file"],
+      "shortcuts": ["cmd+shift+p"]
+    },
+    "code-analyst": {
+      "name": "📊 Code Analyst",
+      "description": "iOS code review and optimization specialist",
+      "model": "claude-3.5-sonnet",
+      "systemPrompt": "Sen bir uzman iOS code reviewer ve performance analyst'isin. Code quality, performance optimization, security vulnerabilities, best practices compliance, memory management ve iOS-specific optimizations konusunda derin expertise'in var. Code review yapar, improvements önerirsin ve refactoring guidance sağlarsın. Her zaman Türkçe açıklama yap ama teknik terimler İngilizce olsun.",
+      "tools": ["read_file", "codebase_search", "grep_search", "run_terminal_cmd", "web_search"],
+      "shortcuts": ["cmd+shift+l"]
+    }
+  },
+  "mcp_integrations": {
+    "supabase": {
+      "auto_activate_keywords": [
+        "database", "backend", "API", "server", "authentication",
+        "supabase", "postgresql", "realtime", "storage",
+        "user management", "data persistence", "sync",
+        "auth", "login", "signup", "session"
+      ],
+      "suggested_modes": ["ios-coder", "ios-architect"],
+      "description": "Supabase backend integration ve database operations için otomatik aktifleşir"
+    },
+    "github": {
+      "auto_activate_keywords": [
+        "repository", "repo", "commit", "push", "pull request", "PR",
+        "branch", "git", "version control", "collaboration",
+        "code review", "merge", "fork", "clone"
+      ],
+      "suggested_modes": ["project-planner", "code-analyst"],
+      "description": "Git operations ve repository management için otomatik aktifleşir"
+    }
+  },
+  "workflow_automation": {
+    "new_project_workflow": {
+      "description": "Yeni iOS projesi için önerilen workflow",
+      "steps": [
+        {
+          "mode": "project-planner",
+          "task": "Feature planning ve project scope belirleme",
+          "duration": "15-30 dakika"
+        },
+        {
+          "mode": "ios-architect", 
+          "task": "Architecture tasarımı ve technical decisions",
+          "duration": "30-60 dakika"
+        },
+        {
+          "mode": "ui-designer",
+          "task": "UI/UX design ve user flow tasarımı",
+          "duration": "45-90 dakika"
+        },
+        {
+          "mode": "ios-coder",
+          "task": "Implementation ve development",
+          "duration": "Ongoing"
+        },
+        {
+          "mode": "code-analyst",
+          "task": "Code review ve optimization",
+          "duration": "Per milestone"
+        }
+      ]
+    },
+    "feature_development_workflow": {
+      "description": "Yeni feature geliştirme için workflow",
+      "steps": [
+        {
+          "mode": "project-planner",
+          "task": "Feature requirements ve task breakdown"
+        },
+        {
+          "mode": "ios-architect",
+          "task": "Technical design ve integration planning"
+        },
+        {
+          "mode": "ui-designer",
+          "task": "UI design ve user experience"
+        },
+        {
+          "mode": "ios-coder",
+          "task": "Feature implementation"
+        },
+        {
+          "mode": "code-analyst",
+          "task": "Testing ve code review"
+        }
+      ]
+    },
+    "bug_fixing_workflow": {
+      "description": "Bug fixing için önerilen workflow",
+      "steps": [
+        {
+          "mode": "code-analyst",
+          "task": "Problem analysis ve root cause investigation"
+        },
+        {
+          "mode": "ios-coder",
+          "task": "Bug fix implementation"
+        },
+        {
+          "mode": "code-analyst",
+          "task": "Testing ve verification"
+        }
+      ]
+    }
+  },
+  "auto_suggestions": {
+    "enabled": true,
+    "show_workflow_suggestions": true,
+    "show_mcp_suggestions": true,
+    "show_mode_shortcuts": true,
+    "suggestion_format": {
+      "title": "🤖 Önerilen Mode",
+      "reason": "📋 Sebep",
+      "alternative": "🔄 Alternatif",
+      "workflow": "📝 Önerilen Workflow",
+      "mcp": "🔌 MCP Entegrasyonu"
+    }
+  },
+  "global_settings": {
+    "language": {
+      "explanations": "turkish",
+      "code": "english",
+      "comments": "english",
+      "variable_names": "english"
+    },
+    "development_focus": "ios",
+    "preferred_architecture": "mvvm",
+    "ui_framework": "swiftui",
+    "backend_preference": "supabase"
+  }
+}
